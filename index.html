@@ -13,12 +13,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    
+    <!-- font awesome cdn  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- style css file -->
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-    <main class="min-h-screen  justify-center items-center flex">
+    <main class="hide min-h-screen  justify-center items-center flex">
         <section id="login-form" class="bg-[#FFFFFF] p-5  w-84 min-h-96 shadow-sm rounded-lg">
             <div class="my-auto  mt-4 items-center justify-center">
                 <img class="flex mx-auto w-20 h-20 my-2" src="./assets/github-logo.png" alt="Github Logo">
@@ -49,7 +52,31 @@
             </div>
         </section>
     </main>
-   
+    <section id="spinner" class="hide flex mx-auto justify-center items-center">
+        <span class=" loading loading-spinner loading-xl"></span>
+    </section>
+    <section id="all-issues" class="">
+        
+        <div class="flex justify-between items-center px-12 py-2 bg-[#FFFFFF] shadow-sm">
+            <div class="flex justify-center items-center space-x-2">
+                <img class="w-10 h-10" src="./assets/github-logo.png" alt="">
+                <h2 class="text-center font-semibold text-[24px] text-[#1F2937]">GitHub Issues Tracker</h2>
+            </div>
+            <div class="space-x-2">
+                <span class="btn"><i class="fa-brands fa-sistrix"></i><input  type="text" class="border-none" placeholder="Search issues..."></span>
+                
+                <button class="btn btn-outline btn-primary bg-[#4A00FF] text-[#FFFFFF] font-semibold text-[16px]"><i class="fa-solid fa-plus"></i>New Issue</button>
+            </div>
+        </div>
+        <div class="my-3 bg-lime-300">
+            <h2>all buton</h2>
+        </div>
+        <div class="bg-orange-300">
+            <h2>all card</h2>
+        </div>
+        
+        
+    </section>
 
     <script src="./script.js"></script>
 </body>
