@@ -101,22 +101,68 @@ loginBtn.addEventListener('click', () => {
 // "createdAt": "2024-01-15T10:30:00Z",
 // "createdAt": "2024-01-15T10:30:00Z"
 
-// const removeActiveButton = (id) => {
-//     const activeBtn = document.querySelectorAll('.btn-main');
-//     activeBtn.map((btn) => {
-//         btn.classList.remove('active');
-//         btn.classList.add("bg-[#64748B]", "text-[#64748B]")
-//     });
-//     const selectId = document.getElementById(id);
-//     selectId.classList.add('active')
-
-
-    
-// }
+const managerSpiner = (spinnerValue) => {
+    const spinner = document.getElementById('spinner');
+    const allCard = document.getElementById('all-card');
+    if (spinnerValue == true) {
+        spinner.classList.remove('hide');
+        allCard.classList.add('hide');
+    } else {
+        spinner.classList.add('hide');
+        allCard.classList.remove('hide');
+    }
+}
 const removeActive = () => {
     const lessonBtn = document.querySelectorAll(".btn-main");
     lessonBtn.forEach((btn) => btn.classList.remove("active"));
     //console.log(lessonBtn);
+}
+
+
+const modalCard = (card) => {
+    //const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`
+    const modalCard = document.getElementById('modal-card');
+   // modalCard.innerHTML = "";
+
+    //cards.map((card) => {
+        //const cardModal = document.createElement("div");
+        modalCard.innerHTML = `
+            <div class="space-y-2">
+                <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
+                <span class="flex items-center space-x-2 text-[#64748B]">
+                    <p class=" bg-green-600 text-[#FFFFFF] font-medium w-fit px-2 py-1 rounded-full text-[12px]">${card.status == 'open' ? "Opened" : "Closed"}</p>
+                    <p>Opened by ${card.author}</p>
+                    <p>${card.createdAt}</p>
+                </span>
+                <div>
+                    ${createLabel(card.labels)}
+                </div>
+                <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
+                <div class="bg-gray-100 flex gap-12 rounded-md p-3">
+                    <span>
+                        <p class="text-[#64748B] text-[14px]">Assignee:</p>
+                        <p class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.author}</p>
+                    </span>
+                    <span>
+                        <p class="text-[#64748B] text-[14px]">Priority: </p>
+                        ${createPriorityLabel(card.priority)}
+                    </span>
+                </div>
+            </div>
+        `;
+        document.getElementById('my_modal_5').showModal();
+        //modalCard.append(cardModal);
+    
+    
+
+}
+const loadModal = (id) => {
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`
+    fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+        modalCard(data.data)
+    })
 }
 
 
@@ -136,7 +182,7 @@ const displayAllIssueCard = async (cards) => {
         const issueCard = document.createElement("div");
         if (card.status == "open") {
             issueCard.innerHTML = `
-                <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
+                <div onclick="loadModal(${card.id})" class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
                         <div class="flex justify-between p-3">
                             <img src="./assets/Open-Status.png" alt="">
                             ${createPriorityLabel(card.priority)}
@@ -145,6 +191,7 @@ const displayAllIssueCard = async (cards) => {
                         <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
                         <div class="flex space-x-1 px-3 my-4">
                             ${createLabel(card.labels)}
+                            
                         </div>
                         <hr class="border-1 border-gray-300">
                         <div class="p-3 space-y-1">
@@ -156,7 +203,7 @@ const displayAllIssueCard = async (cards) => {
             `;
         } else {
             issueCard.innerHTML = `
-                <div class="i bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
+                <div onclick="loadModal(${card.id})" class="i bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
                     <div class="flex justify-between p-3">
                         <img src="./assets/Closed- Status .png" alt="">
                         ${createPriorityLabel(card.priority)}
@@ -218,7 +265,7 @@ const displayAllOpenCard = async (cards) => {
         const issueCard = document.createElement("div");
             if (card.status == "open") {
                 issueCard.innerHTML = `
-                    <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
+                    <div onclick="loadModal(${card.id})" class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
                             <div class="flex justify-between p-3">
                                 <img src="./assets/Open-Status.png" alt="">
                                 ${createPriorityLabel(card.priority)}
@@ -271,7 +318,7 @@ const displayAllClosedCard = async (cards) => {
         const issueCard = document.createElement("div");
         if (card.status == 'closed') {
             issueCard.innerHTML = `
-                <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
+                <div onclick="loadModal(${card.id})" class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
                     <div class="flex justify-between p-3">
                         <img src="./assets/Closed- Status .png" alt="">
                         ${createPriorityLabel(card.priority)}
@@ -314,7 +361,7 @@ const displayAllClosedCard = async (cards) => {
     closeCount.innerText = totalClosed;
 }
 const allOpenCard = async () => {
-    
+    managerSpiner(true);
     const allOpenCount = document.getElementById('all-open-count');
     
     
@@ -340,9 +387,11 @@ const allOpenCard = async () => {
         //console.log(Array.isArray(details))
         displayAllOpenCard(details.data)
     })
+    managerSpiner(false);
 }
+
 const allClosedCard = async () => {
-    
+    managerSpiner(true)
     //const allIssueCount = document.getElementById('all-close-count');
     
     
@@ -368,10 +417,11 @@ const allClosedCard = async () => {
         //console.log(Array.isArray(details))
         displayAllClosedCard(details.data)
     })
+    managerSpiner(false);
 }
 
 const allIssueCard = async () => {
-    
+    managerSpiner(true);
     const allIssueCount = document.getElementById('all-issue-count');
     
     
@@ -397,6 +447,7 @@ const allIssueCard = async () => {
         //console.log(Array.isArray(details))
         displayAllIssueCard(details.data)
     })
+    managerSpiner(false);
 }
 
 
