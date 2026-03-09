@@ -2,3 +2,9 @@
 .hide {
     display: none;
 }
+
+
+.active {
+    background-color: #4A00FF;
+    color: #FFFFFF;
+}
