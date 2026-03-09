@@ -380,10 +380,11 @@ const allOpenCard = async () => {
         const allIssue = document.getElementById('all-issue-container');
         const allOpenContainer = document.getElementById('all-open-container');
         const allCloseContainer = document.getElementById('all-close-container');
+        const searchContainer = document.getElementById('search-container');
         allIssue.classList.add('hide');
         allOpenContainer.classList.remove('hide');
         allCloseContainer.classList.add('hide');
-        
+        searchContainer.classList.add('hide');
         //console.log(Array.isArray(details))
         displayAllOpenCard(details.data)
     })
@@ -410,10 +411,11 @@ const allClosedCard = async () => {
         const allIssue = document.getElementById('all-issue-container');
         const allOpenContainer = document.getElementById('all-open-container');
         const allCloseContainer = document.getElementById('all-close-container');
+        const searchContainer = document.getElementById('search-container');
         allIssue.classList.add('hide');
         allOpenContainer.classList.add('hide');
         allCloseContainer.classList.remove('hide');
-
+        searchContainer.classList.add('hide');
         //console.log(Array.isArray(details))
         displayAllClosedCard(details.data)
     })
@@ -440,9 +442,11 @@ const allIssueCard = async () => {
         const allIssue = document.getElementById('all-issue-container');
         const allOpenContainer = document.getElementById('all-open-container');
         const allCloseContainer = document.getElementById('all-close-container');
+        const searchContainer = document.getElementById('search-container');
         allIssue.classList.remove('hide');
         allOpenContainer.classList.add('hide');
         allCloseContainer.classList.add('hide');
+        searchContainer.classList.add('hide');
         
         //console.log(Array.isArray(details))
         displayAllIssueCard(details.data)
@@ -450,6 +454,106 @@ const allIssueCard = async () => {
     managerSpiner(false);
 }
 
+
+
+//displaySearchCard();
+const displaySearchCard = async (cards) => {
+    console.log(cards.data);
+    const allIssueContainer = document.getElementById('search-card-container');
+    allIssueContainer.innerHTML = ""
+    let totalSearchCount = 0;
+    const totalCount = document.getElementById("search-count");
+    
+    cards.forEach((card) => {
+        console.log(card.labels);
+        //createPriority(card.priority);
+        const issueCard = document.createElement("div");
+        if (card.status == "open") {
+            issueCard.innerHTML = `
+                <div onclick="loadModal(${card.id})" class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
+                        <div class="flex justify-between p-3">
+                            <img src="./assets/Open-Status.png" alt="">
+                            ${createPriorityLabel(card.priority)}
+                        </div>
+                        <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
+                        <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
+                        <div class="flex space-x-1 px-3 my-4">
+                            ${createLabel(card.labels)}
+                            
+                        </div>
+                        <hr class="border-1 border-gray-300">
+                        <div class="p-3 space-y-1">
+                            <p class="text-[#64748B]">#1 by ${card.author}</p>
+                            <p class="text-[#64748B]">${card.createdAt}</p>
+                        </div>
+                    </div>
+            
+            `;
+        } else {
+            issueCard.innerHTML = `
+                <div onclick="loadModal(${card.id})" class="i bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
+                    <div class="flex justify-between p-3">
+                        <img src="./assets/Closed- Status .png" alt="">
+                        ${createPriorityLabel(card.priority)}
+                    </div>
+                    <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
+                    <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
+                    <div class="flex space-x-1 px-3 my-4">
+                        ${createLabel(card.labels)}
+                        
+                    </div>
+                    <hr class="border-1 border-gray-300">
+                    <div class="p-3 space-y-1">
+                        <p class="text-[#64748B]">#1 by ${card.author}</p>
+                        <p class="text-[#64748B]">${card.createdAt}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        allIssueContainer.append(issueCard);
+        if (card.status == "open") {
+            totalSearchCount += 1;
+            console.log("Open is found!");
+            //openCount.innerText = card.status.length
+        }
+        else {
+            console.log("Closed is found!");
+            totalSearchCount += 1;
+        }
+        totalCount.innerText = totalSearchCount;
+    })
+}
+
+
+document.getElementById('search-btn-value').addEventListener('click', () => {
+    managerSpiner(true);
+    const inputValue = document.getElementById("search-value");
+    const searchValue = inputValue.value.trim().toLowerCase();
+    const url = ` https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`
+    fetch(url)
+    .then((res) => res.json())
+    .then((details) => {
+        removeActive();
+        const clickBtn = document.getElementById('search-btn-value');
+        clickBtn.classList.add('active');
+        const allIssue = document.getElementById('all-issue-container');
+        const allOpenContainer = document.getElementById('all-open-container');
+        const allCloseContainer = document.getElementById('all-close-container');
+        const searchContainer = document.getElementById('search-container');
+        allIssue.classList.add('hide');
+        allOpenContainer.classList.add('hide');
+        allCloseContainer.classList.add('hide');
+        searchContainer.classList.remove('hide');
+        const allWords = details.data;
+        const filteredWord = allWords.filter((word) => 
+            word.title.toLowerCase().includes(searchValue)
+        );
+        displaySearchCard(filteredWord);
+        // console.log(details.data);
+    })
+    managerSpiner(false);
+});
 
 
 
