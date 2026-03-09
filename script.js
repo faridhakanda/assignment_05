@@ -553,39 +553,3 @@ allIssueCard();
 
 
 
-// const displayLesson = async (lessons) => {
-//     const levelContainer = document.getElementById("level-container");
-//     levelContainer.innerHTML = "";
-//     //console.log(lessons);
-//     lessons.forEach(lesson => {
-//         //const lessonCard = document.createElement("div");
-//         // lessonCard.innerText = `${lesson.lessonName}`
-//         // levelContainer.append(lessonCard);
-//         //console.log(lesson.lessonName)
-//         console.log("data: ", lesson.status);
-//         // lessonCard.innerHTML = `
-//         //     <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary space-x-2 space-y-2 lesson-btn"
-//         //           ><i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}</
-//         //         >
-//         // `
-//         // levelContainer.append(lessonCard);
-//     });
-//     //console.log(lessons);
-//     //managerSpiner(false);
-// }
-
-
-// const loadLesson =  () => {
-//     const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
-//     // const lessonList = await fetch(url);
-//     // const lessons = await lessonList.json();
-//     // console.log(lessons);
-//     fetch(url)
-//     .then((res) => res.json())
-//     //.then((lessons) => displayLesson(lessons.data));
-//     .then((lessons) => {
-//         displayLesson(lessons.data);
-//     })
-// }
-
-// loadLesson();
