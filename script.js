@@ -1,7 +1,26 @@
 
 // there is 4 level
 // bug, help wanted, good first issue, documentation
-const createElement = (words) => {
+const createPriorityLabel = (word) => {
+    // 1. Define the designs
+    const priorityTextDesign = {
+        "low": "border-gray-100 bg-gray-100 text-gray-600",
+        "medium": "border-orange-100 bg-orange-100 text-orange-600",
+        "high": "border-red-100 bg-red-100 text-red-600"
+    };
+    
+    
+    const priorityStyle = priorityTextDesign[word]; 
+    
+    return `
+        <p class="${priorityStyle} font-medium items-center text-center my-auto text-[12px] w-fit px-4 py-1 rounded-xl">
+            ${word.toUpperCase()}
+        </p>
+    `;
+}
+
+
+const createLabel = (words) => {
     //console.log(arr);
     const iconMap = {
         "bug": "fa-solid fa-bug mr-1",
@@ -10,36 +29,31 @@ const createElement = (words) => {
         "documentation": "fa-regular fa-file-code mr-1",
         "good first issue": "fa-brands fa-files-pinwheel mr-1"
     };
+    const btnDesign = {
+        "bug": "border-red-100 bg-red-100 text-red-600",
+        "help wanted": "border-red-100 bg-orange-100 text-orange-600",
+        "enhancement": "border-greed-100 bg-green-100 text-green-600",
+        "documentation": "border-green-100 bg-green-100 text-green-600",
+        "good first issue": "border-orange-100 bg-yellow-100 text-orange-600"
+    };
     const wordListWithIcons = words.map((word) => {
         let icon = iconMap[word];
+        let btn = btnDesign[word];
         return (
             //console.log("Farid Akanda", icon)
             //console.log(word)
             `
-                <button class=" font-medium text-[12px]  py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 border-red-100 bg-red-100 text-red-600">
+                <button class="space-y-2 font-medium text-[10px]  py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 ${btn}">
                 <i class="${icon}"></i>
-                    ${word}
+                    ${word.toUpperCase()}
                 </button>
             `
-
+        
         )
     });
     return wordListWithIcons.join(" ");
-    // console.log("Word is printed!");
-    // const wordList = words.map(word => 
-        
-    //     `
-    //         <button class="font-medium text-[12px]  py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 border-red-100 bg-red-100 text-red-600">
-    //             <i class="fa-regular fa-life-ring mr-2"></i>
-    //             ${word}
-    //         </button>
-    //     `
-        
-        
-    // );
-      
-    //return wordList.join(" ");
 }
+
 
 
 
@@ -101,45 +115,38 @@ const removeBtnBg = (id) => {
 // "updatedAt": "2024-01-15T10:30:00Z"
 
 
-const displayCard = async (cards) => {
+
+
+// display all issues card 
+const displayAllCard = async (cards) => {
     console.log(cards.data);
     const allIssueContainer = document.getElementById('all-issues-card-container');
     allIssueContainer.innerHTML = ""
     const openCount = document.getElementById('open-count');
     const closeCount = document.getElementById('close-count');
     
-    // cards.forEach((card) => {
-    //     console.log(card.id)
-    // })
-    // for (const {title, id} of cards) {
-    //     console.log(title, id)
-    // }
-    
-    // for bug, help wanted and enhancement button code
-    // <button class="font-medium text-[12px]  py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 border-red-100 bg-red-100 text-red-600"><i class="fa-solid fa-bug mr-1"></i>BUG</button>
-    // <button class="font-medium text-[12px] py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 border-red-100 bg-orange-100 text-orange-600"><i class="fa-regular fa-life-ring mr-1"></i>HELP WANTED</button>
-
     let totalOpen = 0;
     let totalClosed = 0;
     cards.forEach((card) => {
         console.log(card.labels);
+        //createPriority(card.priority);
         const issueCard = document.createElement("div");
         if (card.status == "open") {
             issueCard.innerHTML = `
                 <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
                         <div class="flex justify-between p-3">
                             <img src="./assets/Open-Status.png" alt="">
-                            <p class="bg-red-100 text-red-600 font-medium items-center text-center my-auto text-[12px] w-fit px-4 py-1 rounded-xl">${card.priority.toUpperCase()}</p>
+                            ${createPriorityLabel(card.priority)}
                         </div>
                         <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
                         <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
-                        <div class="px-3 my-4">
-                            ${createElement(card.labels)}
+                        <div class="flex space-x-1 px-3 my-4">
+                            ${createLabel(card.labels)}
                         </div>
                         <hr class="border-1 border-gray-300">
                         <div class="p-3 space-y-1">
-                            <p class="">#1 by ${card.author}</p>
-                            <p class="">${card.updatedAt}</p>
+                            <p class="text-[#64748B]">#1 by ${card.author}</p>
+                            <p class="text-[#64748B]">${card.updatedAt}</p>
                         </div>
                     </div>
             
@@ -149,18 +156,18 @@ const displayCard = async (cards) => {
                 <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
                     <div class="flex justify-between p-3">
                         <img src="./assets/Closed- Status .png" alt="">
-                        <p class="bg-gray-100 text-gray-600 font-medium items-center text-center my-auto text-[12px] w-fit px-4 py-1 rounded-xl">${card.priority.toUpperCase()}</p>
+                        ${createPriorityLabel(card.priority)}
                     </div>
                     <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
                     <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
-                    <div class="px-3 my-4">
-                        <button class="font-medium text-[12px]  py-[2px] text-center items-center w-fit px-2 rounded-xl border-1 border-green-100 bg-green-200 text-green-600"><i class="fa-solid fa-hand-sparkles mr-1"></i>ENHANCEMENT</button>
+                    <div class="flex space-x-1 px-3 my-4">
+                        ${createLabel(card.labels)}
                         
                     </div>
                     <hr class="border-1 border-gray-300">
                     <div class="p-3 space-y-1">
-                        <p class="">#1 by ${card.author}</p>
-                        <p class="">${card.updatedAt}</p>
+                        <p class="text-[#64748B]">#1 by ${card.author}</p>
+                        <p class="text-[#64748B]">${card.updatedAt}</p>
                     </div>
                 </div>
             `;
@@ -189,6 +196,8 @@ const displayCard = async (cards) => {
     closeCount.innerText = totalClosed;
 }
 
+
+
 const allIssue = async () => {
     
     const allIssueCount = document.getElementById('all-issue-count');
@@ -203,8 +212,8 @@ const allIssue = async () => {
         //console.log(details.data.length)
         console.log(details)
         console.log("Array of card is show: ");
-        console.log(Array.isArray(details))
-        displayCard(details.data)
+        //console.log(Array.isArray(details))
+        displayAllCard(details.data)
     })
 }
 
@@ -216,39 +225,39 @@ allIssue();
 
 
 
-const displayLesson = async (lessons) => {
-    const levelContainer = document.getElementById("level-container");
-    levelContainer.innerHTML = "";
-    //console.log(lessons);
-    lessons.forEach(lesson => {
-        //const lessonCard = document.createElement("div");
-        // lessonCard.innerText = `${lesson.lessonName}`
-        // levelContainer.append(lessonCard);
-        //console.log(lesson.lessonName)
-        console.log("data: ", lesson.status);
-        // lessonCard.innerHTML = `
-        //     <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary space-x-2 space-y-2 lesson-btn"
-        //           ><i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}</
-        //         >
-        // `
-        // levelContainer.append(lessonCard);
-    });
-    //console.log(lessons);
-    //managerSpiner(false);
-}
+// const displayLesson = async (lessons) => {
+//     const levelContainer = document.getElementById("level-container");
+//     levelContainer.innerHTML = "";
+//     //console.log(lessons);
+//     lessons.forEach(lesson => {
+//         //const lessonCard = document.createElement("div");
+//         // lessonCard.innerText = `${lesson.lessonName}`
+//         // levelContainer.append(lessonCard);
+//         //console.log(lesson.lessonName)
+//         console.log("data: ", lesson.status);
+//         // lessonCard.innerHTML = `
+//         //     <button id="lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary space-x-2 space-y-2 lesson-btn"
+//         //           ><i class="fa-solid fa-book-open"></i>Lesson - ${lesson.level_no}</
+//         //         >
+//         // `
+//         // levelContainer.append(lessonCard);
+//     });
+//     //console.log(lessons);
+//     //managerSpiner(false);
+// }
 
 
-const loadLesson =  () => {
-    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
-    // const lessonList = await fetch(url);
-    // const lessons = await lessonList.json();
-    // console.log(lessons);
-    fetch(url)
-    .then((res) => res.json())
-    //.then((lessons) => displayLesson(lessons.data));
-    .then((lessons) => {
-        displayLesson(lessons.data);
-    })
-}
+// const loadLesson =  () => {
+//     const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
+//     // const lessonList = await fetch(url);
+//     // const lessons = await lessonList.json();
+//     // console.log(lessons);
+//     fetch(url)
+//     .then((res) => res.json())
+//     //.then((lessons) => displayLesson(lessons.data));
+//     .then((lessons) => {
+//         displayLesson(lessons.data);
+//     })
+// }
 
-loadLesson();
+// loadLesson();
