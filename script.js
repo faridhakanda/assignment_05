@@ -112,21 +112,21 @@ const removeBtnBg = (id) => {
 // "author": "john_doe",
 // "assignee": "jane_smith",
 // "createdAt": "2024-01-15T10:30:00Z",
-// "updatedAt": "2024-01-15T10:30:00Z"
+// "createdAt": "2024-01-15T10:30:00Z"
 
 
 
 
-// display all issues card 
-const displayAllCard = async (cards) => {
+// display all issue card 
+const displayAllIssueCard = async (cards) => {
     console.log(cards.data);
     const allIssueContainer = document.getElementById('all-issues-card-container');
     allIssueContainer.innerHTML = ""
-    const openCount = document.getElementById('open-count');
-    const closeCount = document.getElementById('close-count');
+    // const openCount = document.getElementById('open-count');
+    // const closeCount = document.getElementById('close-count');
     
-    let totalOpen = 0;
-    let totalClosed = 0;
+    // let totalOpen = 0;
+    // let totalClosed = 0;
     cards.forEach((card) => {
         console.log(card.labels);
         //createPriority(card.priority);
@@ -146,7 +146,7 @@ const displayAllCard = async (cards) => {
                         <hr class="border-1 border-gray-300">
                         <div class="p-3 space-y-1">
                             <p class="text-[#64748B]">#1 by ${card.author}</p>
-                            <p class="text-[#64748B]">${card.updatedAt}</p>
+                            <p class="text-[#64748B]">${card.createdAt}</p>
                         </div>
                     </div>
             
@@ -167,18 +167,150 @@ const displayAllCard = async (cards) => {
                     <hr class="border-1 border-gray-300">
                     <div class="p-3 space-y-1">
                         <p class="text-[#64748B]">#1 by ${card.author}</p>
-                        <p class="text-[#64748B]">${card.updatedAt}</p>
+                        <p class="text-[#64748B]">${card.createdAt}</p>
                     </div>
                 </div>
             `;
         }
         
         allIssueContainer.append(issueCard);
-        if (card.status == "open") {
-            totalOpen += 1;
-            console.log("Open is found!");
-            //openCount.innerText = card.status.length
+        // if (card.status == "open") {
+        //     totalOpen += 1;
+        //     console.log("Open is found!");
+        //     //openCount.innerText = card.status.length
+        // }
+        // if (card.status == "closed") {
+        //     console.log("Closed is found!");
+        //     totalClosed += 1;
+        //     //closeCount.innerText = card.status.length
+        // }
+        // console.log(
+        //     card.id,
+        //     card.title,
+        //     card.status,
+        //     card.labels,
+        //     card.priority
+        // )
+    })
+    // openCount.innerText = totalOpen;
+    // closeCount.innerText = totalClosed;
+}
+
+// display all open issue card
+const displayAllOpenCard = async (cards) => {
+    console.log(cards.data);
+    const allOpenCardContainer = document.getElementById('all-open-card-container');
+    allOpenCardContainer.innerHTML = ""
+    const openCount = document.getElementById('all-open-count');
+    //const closeCount = document.getElementById('close-count');
+    
+    let totalOpen = 0;
+    let totalClosed = 0;
+    cards.forEach((card) => {
+        console.log(card.labels);
+        //createPriority(card.priority);
+        const issueCard = document.createElement("div");
+            if (card.status == "open") {
+                issueCard.innerHTML = `
+                    <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2 min-h-full">
+                            <div class="flex justify-between p-3">
+                                <img src="./assets/Open-Status.png" alt="">
+                                ${createPriorityLabel(card.priority)}
+                            </div>
+                            <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
+                            <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
+                            <div class="flex space-x-1 px-3 my-4">
+                                ${createLabel(card.labels)}
+                            </div>
+                            <hr class="border-1 border-gray-300">
+                            <div class="p-3 space-y-1">
+                                <p class="text-[#64748B]">#1 by ${card.author}</p>
+                                <p class="text-[#64748B]">${card.createdAt}</p>
+                            </div>
+                        </div>
+                
+                `;
+            } else {
+                issueCard.innerHTML = `
+                    <div class="hide"></div>
+                `;
+            }
+            allOpenCardContainer.append(issueCard);
+            if (card.status == 'open') {
+                totalOpen += 1;
+            }
         }
+        
+        //allOpenCardContainer.append(issueCard)
+        // if(card.status == 'open') {
+        //     totalOpen += 1;
+        // }
+    )
+    openCount.innerText = totalOpen;
+}
+const allOpenCard = async () => {
+    
+    const allOpenCount = document.getElementById('all-open-count');
+    
+    
+    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
+    const res = await fetch(url)
+    const details = await  res.json()
+    .then((details) => {
+        allOpenCount.innerText = details.data.length
+        // openCount.innerText = details.data.status
+        //console.log(details.data.length)
+        console.log(details)
+        console.log("Array of card is show: ");
+        //console.log(Array.isArray(details))
+        displayAllOpenCard(details.data)
+    })
+}
+
+
+
+// display all closed issue card
+const displayAllClosedCard = async (cards) => {
+    console.log(cards.data);
+    const allClosedCardContainer = document.getElementById('all-closed-card-container');
+    allClosedCardContainer.innerHTML = ""
+    //const openCount = document.getElementById('open-count');
+    const closeCount = document.getElementById('all-closed-count');
+    
+    //let totalOpen = 0;
+    let totalClosed = 0;
+    cards.forEach((card) => {
+        console.log(card.labels);
+        //createPriority(card.priority);
+        const issueCard = document.createElement("div");
+        if (card.status == 'closed') {
+            issueCard.innerHTML = `
+                <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
+                    <div class="flex justify-between p-3">
+                        <img src="./assets/Closed- Status .png" alt="">
+                        ${createPriorityLabel(card.priority)}
+                    </div>
+                    <h2 class="px-3 font-semibold text-[14px] text-[#1F2937]">${card.title}</h2>
+                    <p class="px-3 text-[#64748B] text-[12px]">${card.description}</p>
+                    <div class="flex space-x-1 px-3 my-4">
+                        ${createLabel(card.labels)}
+                        
+                    </div>
+                    <hr class="border-1 border-gray-300">
+                    <div class="p-3 space-y-1">
+                        <p class="text-[#64748B]">#1 by ${card.author}</p>
+                        <p class="text-[#64748B]">${card.createdAt}</p>
+                    </div>
+                </div>
+            `;
+        } 
+        
+        allClosedCardContainer.append(issueCard);
+        // if (card.status == "open") {
+        //     totalOpen += 1;
+        //     console.log("Open is found!");
+        //     //openCount.innerText = card.status.length
+        // }
         if (card.status == "closed") {
             console.log("Closed is found!");
             totalClosed += 1;
@@ -192,13 +324,29 @@ const displayAllCard = async (cards) => {
         //     card.priority
         // )
     })
-    openCount.innerText = totalOpen;
+    //openCount.innerText = totalOpen;
     closeCount.innerText = totalClosed;
 }
+const allClosedCard = async () => {
+    
+    //const allIssueCount = document.getElementById('all-close-count');
+    
+    
+    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
+    const res = await fetch(url)
+    const details = await  res.json()
+    .then((details) => {
+        //allIssueCount.innerText = details.data.length
+        // openCount.innerText = details.data.status
+        //console.log(details.data.length)
+        console.log(details)
+        console.log("Array of card is show: ");
+        //console.log(Array.isArray(details))
+        displayAllClosedCard(details.data)
+    })
+}
 
-
-
-const allIssue = async () => {
+const allIssueCard = async () => {
     
     const allIssueCount = document.getElementById('all-issue-count');
     
@@ -213,14 +361,16 @@ const allIssue = async () => {
         console.log(details)
         console.log("Array of card is show: ");
         //console.log(Array.isArray(details))
-        displayAllCard(details.data)
+        displayAllIssueCard(details.data)
     })
 }
 
 
 
 
-allIssue();
+allIssueCard();
+allOpenCard();
+allClosedCard();
 
 
 
