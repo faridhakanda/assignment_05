@@ -69,9 +69,9 @@
             </div>
         </div>
         <div class="my-4 bg-[#FFFFFF] shadow-sm  space-x-2 p-2 w-[1140px] mx-auto rounded-md">
-            <button id="all-btn"  class="btn btn-none font-medium bg-[#4A00FF] text-[#FFFFFF]">All</button>
-            <button id="open-btn"  class="btn btn-none font-medium text-[#64748B]">Open</button>
-            <button id="close-btn"  class="btn btn-none font-medium text-[#64748B]">Close</button>
+            <button onclick="allIssueCard()" id="all-btn"  class="active btn-main btn btn-none font-medium  text-[#64748B]">All</button>
+            <button onclick="allOpenCard()" id="open-btn"  class="btn btn-main btn-none font-medium text-[#64748B]">Open</button>
+            <button onclick="allClosedCard()" id="close-btn"  class="btn btn-main btn-none font-medium text-[#64748B]">Close</button>
         </div>
         
         
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <!-- All Issues Card -->
-            <div id="all-issues-card-container" class="grid grid-cols-4 gap-2 m-3">
+            <div id="all-issues-card-container" class="grid grid-cols-3 gap-2 m-3">
                 <!-- Card 1 -->
                 <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2">
                     <div class="flex justify-between p-3">
@@ -119,7 +119,7 @@
 
         
         <!-- All Open Issue Card Container -->
-        <div id="all-open-container" class="bg-[#FFFFFF] w-[1140px] mx-auto shadow-sm space-y-2 rounded-md mt-2 pb-3 mb-2">
+        <div id="all-open-container" class="hide bg-[#FFFFFF] w-[1140px] mx-auto shadow-sm space-y-2 rounded-md mt-2 pb-3 mb-2">
             <div class="p-3 shadow-sm flex justify-between">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 bg-purple-100 rounded-full justify-center m-auto items-center">
@@ -137,7 +137,7 @@
                 </div>
             </div>
             <!-- All Open Issue Card -->
-            <div id="all-open-card-container" class="grid grid-cols-4 gap-2 m-3">
+            <div id="all-open-card-container" class="grid grid-cols-3 gap-2 m-3">
                 <!-- Card 1 -->
                 <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2">
                     <div class="flex justify-between p-3">
@@ -218,7 +218,7 @@
 
         
         <!-- All Closed Issue Card Container -->
-         <div id="all-close-container" class="bg-[#FFFFFF] w-[1140px] mx-auto shadow-sm space-y-2 rounded-md mt-2 pb-3 mb-2">
+         <div id="all-close-container" class="hide bg-[#FFFFFF] w-[1140px] mx-auto shadow-sm space-y-2 rounded-md mt-2 pb-3 mb-2">
             <div class="p-3 shadow-sm flex justify-between">
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 bg-purple-100 rounded-full justify-center m-auto items-center">
@@ -236,10 +236,10 @@
                 </div>
             </div>
 
-
+            
 
             <!-- All Closed Issue Card -->
-            <div id="all-closed-card-container" class="grid grid-cols-4 gap-2 m-3">
+            <div id="all-closed-card-container" class="grid grid-cols-3 gap-2 m-3">
                 <!-- Card 1 -->
                 <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-green-500 space-y-2 mb-2">
                     <div class="flex justify-between p-3">

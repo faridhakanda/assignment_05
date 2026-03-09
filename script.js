@@ -84,20 +84,7 @@ loginBtn.addEventListener('click', () => {
 
 
 
-const removeBtnBg = (id) => {
-    const buttons = document.querySelectorAll('.btn-none');
-    buttons.forEach((btn) => btn.classList.remove("active"));
-    const selectedId = document.getElementById(id);
-    selectedId.classList.add('active');
-    // buttons.forEach((btn) => {
-    //     btn.classList.add('bg-[#FFFFFF]','text-[#64748B]');
-    // })
-    // const selectedId = document.getElementById(id);
-    // selectedId.classList.remove('bg-[#FFFFFF]', 'text-[#64748B]');
-    // selectedId.classList.add('bg-[#4A00FF', 'text-[#FFFFFF]');
-}
-//removeBtnBg();
-//removeBtnBg()
+
 
 
 // "id": 1,
@@ -114,7 +101,23 @@ const removeBtnBg = (id) => {
 // "createdAt": "2024-01-15T10:30:00Z",
 // "createdAt": "2024-01-15T10:30:00Z"
 
+// const removeActiveButton = (id) => {
+//     const activeBtn = document.querySelectorAll('.btn-main');
+//     activeBtn.map((btn) => {
+//         btn.classList.remove('active');
+//         btn.classList.add("bg-[#64748B]", "text-[#64748B]")
+//     });
+//     const selectId = document.getElementById(id);
+//     selectId.classList.add('active')
 
+
+    
+// }
+const removeActive = () => {
+    const lessonBtn = document.querySelectorAll(".btn-main");
+    lessonBtn.forEach((btn) => btn.classList.remove("active"));
+    //console.log(lessonBtn);
+}
 
 
 // display all issue card 
@@ -153,7 +156,7 @@ const displayAllIssueCard = async (cards) => {
             `;
         } else {
             issueCard.innerHTML = `
-                <div class="bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
+                <div class="i bg-[#FFFFFF] border-t-4 rounded-t-md rounded-md border-1 border-purple-500 space-y-2 mb-2 min-h-full">
                     <div class="flex justify-between p-3">
                         <img src="./assets/Closed- Status .png" alt="">
                         ${createPriorityLabel(card.priority)}
@@ -209,6 +212,9 @@ const displayAllOpenCard = async (cards) => {
     cards.forEach((card) => {
         console.log(card.labels);
         //createPriority(card.priority);
+        if (card.status == 'closed') {
+            return;
+        }
         const issueCard = document.createElement("div");
             if (card.status == "open") {
                 issueCard.innerHTML = `
@@ -230,10 +236,6 @@ const displayAllOpenCard = async (cards) => {
                         </div>
                 
                 `;
-            } else {
-                issueCard.innerHTML = `
-                    <div class="hide"></div>
-                `;
             }
             allOpenCardContainer.append(issueCard);
             if (card.status == 'open') {
@@ -248,24 +250,7 @@ const displayAllOpenCard = async (cards) => {
     )
     openCount.innerText = totalOpen;
 }
-const allOpenCard = async () => {
-    
-    const allOpenCount = document.getElementById('all-open-count');
-    
-    
-    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
-    const res = await fetch(url)
-    const details = await  res.json()
-    .then((details) => {
-        allOpenCount.innerText = details.data.length
-        // openCount.innerText = details.data.status
-        //console.log(details.data.length)
-        console.log(details)
-        console.log("Array of card is show: ");
-        //console.log(Array.isArray(details))
-        displayAllOpenCard(details.data)
-    })
-}
+
 
 
 
@@ -282,6 +267,7 @@ const displayAllClosedCard = async (cards) => {
     cards.forEach((card) => {
         console.log(card.labels);
         //createPriority(card.priority);
+        if (card.status == 'open') return;
         const issueCard = document.createElement("div");
         if (card.status == 'closed') {
             issueCard.innerHTML = `
@@ -327,6 +313,34 @@ const displayAllClosedCard = async (cards) => {
     //openCount.innerText = totalOpen;
     closeCount.innerText = totalClosed;
 }
+const allOpenCard = async () => {
+    
+    const allOpenCount = document.getElementById('all-open-count');
+    
+    
+    const url = 'https://phi-lab-server.vercel.app/api/v1/lab/issues';
+    const res = await fetch(url)
+    const details = await  res.json()
+    .then((details) => {
+        allOpenCount.innerText = details.data.length
+        // openCount.innerText = details.data.status
+        //console.log(details.data.length)
+        console.log(details)
+        console.log("Array of card is show: ");
+        const clickBtn = document.getElementById('open-btn');
+        removeActive();
+        clickBtn.classList.add('active');
+        const allIssue = document.getElementById('all-issue-container');
+        const allOpenContainer = document.getElementById('all-open-container');
+        const allCloseContainer = document.getElementById('all-close-container');
+        allIssue.classList.add('hide');
+        allOpenContainer.classList.remove('hide');
+        allCloseContainer.classList.add('hide');
+        
+        //console.log(Array.isArray(details))
+        displayAllOpenCard(details.data)
+    })
+}
 const allClosedCard = async () => {
     
     //const allIssueCount = document.getElementById('all-close-count');
@@ -341,6 +355,16 @@ const allClosedCard = async () => {
         //console.log(details.data.length)
         console.log(details)
         console.log("Array of card is show: ");
+        const clickBtn = document.getElementById('close-btn');
+        removeActive();
+        clickBtn.classList.add('active');
+        const allIssue = document.getElementById('all-issue-container');
+        const allOpenContainer = document.getElementById('all-open-container');
+        const allCloseContainer = document.getElementById('all-close-container');
+        allIssue.classList.add('hide');
+        allOpenContainer.classList.add('hide');
+        allCloseContainer.classList.remove('hide');
+
         //console.log(Array.isArray(details))
         displayAllClosedCard(details.data)
     })
@@ -360,6 +384,16 @@ const allIssueCard = async () => {
         //console.log(details.data.length)
         console.log(details)
         console.log("Array of card is show: ");
+        const clickBtn = document.getElementById('all-btn');
+        removeActive();
+        clickBtn.classList.add('active');
+        const allIssue = document.getElementById('all-issue-container');
+        const allOpenContainer = document.getElementById('all-open-container');
+        const allCloseContainer = document.getElementById('all-close-container');
+        allIssue.classList.remove('hide');
+        allOpenContainer.classList.add('hide');
+        allCloseContainer.classList.add('hide');
+        
         //console.log(Array.isArray(details))
         displayAllIssueCard(details.data)
     })
@@ -369,8 +403,8 @@ const allIssueCard = async () => {
 
 
 allIssueCard();
-allOpenCard();
-allClosedCard();
+// allOpenCard();
+// allClosedCard();
 
 
 
